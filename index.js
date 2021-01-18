@@ -159,7 +159,7 @@ client.on('message', message => {
                             var sanResult = filename.substring(0, filename.length - 1);
                             console.log(sanResult);
                             // Send downloadlink pointing to requested mp3 back to user
-                            message.channel.send(`${message.author}, here is your download link for \`` + sanResult + `\`.` + ` It's valid for a few hours.` + `\n` + `https://`+ config.hostname + `/ytdownloader/` + encodeURIComponent(sanResult));
+                            message.channel.send(`${message.author}, here is your download link for \`` + sanResult + `\`.` + ` It's valid for a few hours.` + `\n` + `https://` + config.hostname + `/ytdownloader/` + encodeURIComponent(sanResult));
                         });
 
                     });
