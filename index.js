@@ -111,11 +111,11 @@ client.on('message', message => {
     if (command === 'ping') {
         message.channel.send("Pong");
 
-    // Test mentions
+        // Test mentions
     } else if (command === 'mention') {
         message.channel.send(getMentionStringForReply(message) + ' pong');
 
-    // Test if bot can call scripts locally stored on server
+        // Test if bot can call scripts locally stored on server
     } else if (command === 'speak') {
         try {
             execute("./scripts/test.sh", function (result) {
@@ -152,7 +152,7 @@ client.on('message', message => {
                 if (isYoutubeLink(args[0])) {
                     // Let the user know we're working on downloading the video
                     message.channel.send(`Okay, starting download now. Your file will be ready shortly. I'll get back to you as soon as I'm done.`)
-                    
+
                     // Starting download process here
                     let child = require('child_process').exec("youtube-dl -f bestaudio --no-mtime --extract-audio --audio-format mp3 --audio-quality 0 -o '/home/rapbot/bot/RapBot/ytdownloader/%(title)s.%(ext)s' '" + args[0] + "'");
 
@@ -165,8 +165,12 @@ client.on('message', message => {
                             // Remove linebreak, idk how that got there in the first place
                             let sanResult = filename.substring(0, filename.length - 1);
                             console.log(sanResult);
-                            // Send downloadlink pointing to requested mp3 back to user
-                            message.channel.send(`${message.author}, here is your download link for \`` + sanResult + `\`.` + ` It's valid for a few hours.` + `\n` + `https://` + config.hostname + `/ytdownloader/` + encodeURIComponent(sanResult));
+                            if (!(sanResult === ".htaccess" || sanResult === "htaccess" || sanResult === ".htacces")) {
+                                // Send downloadlink pointing to requested mp3 back to user
+                                message.channel.send(`${message.author}, here is your download link for \`` + sanResult + `\`.` + ` It's valid for a few hours.` + `\n` + `https://` + config.hostname + `/ytdownloader/` + encodeURIComponent(sanResult));
+                            } else {
+                                message.channel.send(`${message.author}, I'm sorry but it appears that something went wrong. Maybe the link you sent me is a playlist or it's not available in Germany`);
+                            }
                         });
 
                     });
@@ -195,7 +199,7 @@ client.on('message', message => {
             executedSuccessfully = false;
         }
     }
-    
+
     /*
     * Handler for freestyle command
     *
